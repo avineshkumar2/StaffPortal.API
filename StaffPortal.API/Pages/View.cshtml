@@ -1,0 +1,48 @@
+﻿@page
+@model StaffPortal.API.Pages.ViewModel
+@{
+    ViewData["Title"] = "View Staff";
+}
+
+<a href="Home">Go Back to Home Page</a><br/><br/>
+
+<h1>View Staff</h1>
+
+<form method="get">
+    <label for="employeeNumber">Employee Number:</label>
+    <input type="text" id="employeeNumber" name="employeeNumber" required />
+    <button type="submit">Search</button>
+</form>
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div style="color:green">@Model.SuccessMessage</div>
+}
+@if (Model.Staff != null)
+{
+    <h2>Staff Details</h2>
+    <p><strong>Employee Number:</strong> @Model.Staff.EmployeeNumber</p>
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="employeeNumber" value="@Model.Staff.EmployeeNumber" />
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" value="@Model.Staff.FirstName" required />
+        </div>
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" value="@Model.Staff.LastName" required />
+        </div>
+        <div>
+            <label for="dateOfBirth">Date of Birth:</label>
+            <input type="date" pattern="\d{2}/\d{2}/\d{4}" id="dateOfBirth" name="dateOfBirth" value="@Model.Staff.DateOfBirth.ToString("yyyy-MM-dd")" required />
+        </div>
+        <button type="submit">Update</button>
+    </form>
+}
+else
+{
+    if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div style="color:red">@Model.ErrorMessage</div>
+    }
+}
